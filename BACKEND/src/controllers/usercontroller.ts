@@ -13,10 +13,11 @@ export async function register(req: Request, res: Response) {
             success: false
         })
     }
+    const hashedPassword = await bcrypt.hash(password, 10)
     const user = await UserModel.create({
         fullname,
         email,
-        password,
+        password: hashedPassword,
         role
     })
     const token = jwt.sign({
@@ -42,7 +43,7 @@ export async function login(req: Request, res: Response) {
             success: false
         })
     }
-    const passwordIsvalid = bcrypt.compare(password, user.password)
+    const passwordIsvalid = await bcrypt.compare(password, user.password)
     if (!passwordIsvalid) {
         return res.status(400).json({
             message: "invalid password",

@@ -7,7 +7,7 @@ export interface User {
 }
 
 const api = axios.create({
-    baseURL: "http://localhost:3000/api/user",
+    baseURL: "/api/user",
     withCredentials: true
 })
 
@@ -25,6 +25,6 @@ export async function login({ email, password }: Pick<User, 'email' | 'password'
         const response = await api.post("/login", { email, password })
         return response.data
     } catch (err) {
-        console.log(err)
+        throw err
     }
 }

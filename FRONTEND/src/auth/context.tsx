@@ -24,10 +24,10 @@ export function AuthProvider({ children }: {
     const LoginUser = async function ({ email, password }: User) {
         try {
             const res = await login({ email, password })
-            return res.data
+            console.log(res.user)
         }
         catch (err) {
-            console.log(err)
+            throw err
         } finally {
             setLoading(false)
         }

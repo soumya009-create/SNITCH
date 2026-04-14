@@ -1,24 +1,34 @@
 import { useState } from "react"
 import { useNavigate, Link } from "react-router"
+import { useAuth } from "../auth/hooks.ts"
 
 const Login = () => {
     const navigate = useNavigate()
-    const [form, setForm] = useState({ email: "", password: "" })
+    // const [form, setForm] = useState({ email: "", password: "" })
     const [showPassword, setShowPassword] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const { LoginUser, loading, setLoading } = useAuth()
+    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("")
+    const [check, setCheck] = useState(true)
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value })
-    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        // TODO: wire up auth API
-        setTimeout(() => {
+        await LoginUser({ email, password }).then(() => {
+            navigate("/home")
+        }).catch((err) => {
+            setCheck(false)
+            setEmail("")
+            setPassword("")
+            setTimeout(() => {
+                setCheck(true)
+            }, 2000)
+
+        }).finally(() => {
             setLoading(false)
-            navigate("/")
-        }, 1200)
+        })
+
     }
 
     return (
@@ -39,7 +49,10 @@ const Login = () => {
                             </svg>
                         </div>
                         <h1 className="text-2xl font-bold text-white tracking-tight">Welcome back</h1>
-                        <p className="text-sm text-gray-400 mt-1">Sign in to your Snitch account</p>
+                        {
+                            check ? <p className="text-sm text-gray-400 mt-1">Sign in to your Snitch account</p> : <p className="text-sm text-red-400 mt-1">Account does not exist with this credentials</p>
+
+                        }
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
@@ -58,8 +71,8 @@ const Login = () => {
                                 <input
                                     type="email"
                                     name="email"
-                                    value={form.email}
-                                    onChange={handleChange}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                     placeholder="you@example.com"
                                     className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
@@ -85,8 +98,8 @@ const Login = () => {
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     name="password"
-                                    value={form.password}
-                                    onChange={handleChange}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     required
                                     placeholder="••••••••"
                                     className="w-full pl-10 pr-11 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
