@@ -16,7 +16,7 @@ export async function register({ fullname, email, password, role }: User) {
         const response = await api.post("/register", { fullname, email, password, role })
         return response.data
     } catch (err) {
-        console.log(err)
+        throw err
     }
 }
 

@@ -8,18 +8,15 @@ export function AuthProvider({ children }: {
     children: React.ReactNode
 }) {
     const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     const registerUser = async function ({ fullname, email, password, role }: User) {
         try {
             const res = await register({ fullname, password, email, role })
-            if (res.data.success) {
-                setUser(res.data.user)
-
-            }
+            console.log(res)
         }
         catch (err) {
-            console.log(err)
+            throw err
         } finally {
             setLoading(false)
         }

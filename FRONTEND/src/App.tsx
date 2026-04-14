@@ -1,12 +1,12 @@
-
-
+import AppRoutes from "./app.routes"
+import { AuthProvider } from './auth/context.tsx'
 function App() {
 
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline bg-red-500">hello world</h1>
-    </div>
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
   )
 }
 

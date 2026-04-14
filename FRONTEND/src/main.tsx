@@ -4,12 +4,14 @@ import { createRoot } from 'react-dom/client'
 // import { store } from './store/app.store.ts'
 import './index.css'
 import App from './App.tsx'
-import { AuthProvider } from './auth/context.tsx'
 
+// import { BrowserRouter } from 'react-router'
+
+// 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+
+    <App />
+
   </StrictMode>,
 )
