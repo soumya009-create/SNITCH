@@ -1,0 +1,19 @@
+the concept of proxy server : it is very important for making the frontend and backend communicate with each other without any direct interaction
+
+frontend -> proxy -> backend
+
+
+no cors problems are use
+
+
+! : Non-Null Assertion Operator in TypeScript.
+
+It simply tells TypeScript:
+
+"I know this value is NOT null or undefined — stop complaining about it."
+
+
+failure redirect and node_env wala concept
+
+
+protected api

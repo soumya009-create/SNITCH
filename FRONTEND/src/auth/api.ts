@@ -28,3 +28,12 @@ export async function login({ email, password }: Pick<User, 'email' | 'password'
         throw err
     }
 }
+
+export async function getMe() {
+    try {
+        const response = await api.get("/me")
+        return response.data
+    } catch (err) {
+        throw err
+    }
+}

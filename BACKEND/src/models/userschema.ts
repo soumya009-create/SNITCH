@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"
+import { Types } from "mongoose";
 export interface User {
     fullname: string,
     email: string,
     password: string,
-    role: string
+    role: "buyer" | "seller",
+    _id: Types.ObjectId,
+    provider: "google" | "email"
 
 }
 
@@ -19,7 +22,15 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: function () {
+            return this.provider !== "google"
+        }
+    },
+    provider: {
+        type: String,
+        enum: ["google", "email"],
+        default: "email",
+        required: false
     },
     role: {
         type: String,
@@ -28,10 +39,7 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-userSchema.pre("save", async function () {
-    if (!this.isModified("password")) return
-    this.password = await bcrypt.hash(this.password, 10)
-})
+
 
 const UserModel = mongoose.model<User>("User", userSchema)
 
